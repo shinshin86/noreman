@@ -17,7 +17,8 @@
     "files": {
       "include": [
         "src",
-        "deno.jsonc"
+        "deno.jsonc",
+        "package.json"
       ],
       "exclude": ["node_modules"]
     }
