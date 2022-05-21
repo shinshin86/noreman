@@ -26,7 +26,7 @@ const spawnProc = (proc: ProcInfo, emitter: EventEmitter) => {
 
   child.on("close", (code, signal) => {
     try {
-      stopProc(proc, emitter);
+      stopProc(proc);
 
       if (code === 0) {
         proc.exitCode = code;
