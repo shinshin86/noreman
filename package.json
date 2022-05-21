@@ -1,4 +1,8 @@
 {
+  "main": "dist/noreman.js",
+  "bin": {
+    "sfg": "dist/noreman.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "node -r @swc-node/register src/main.ts",
