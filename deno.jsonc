@@ -1,0 +1,25 @@
+{
+  "lint": {
+    "files": {
+      "include": [
+        "src"
+      ],
+      "exclude": ["node_modules"]
+    },
+    "rules": {
+      "tags": ["recommend"],
+      "exclude": [
+        "no-unused-vars"
+      ]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": [
+        "src",
+        "deno.jsonc"
+      ],
+      "exclude": ["node_modules"]
+    }
+  }
+}
