@@ -36,19 +36,17 @@ const spawnProc = (proc: ProcInfo, emitter: EventEmitter) => {
         console.log(`${proc.name}: Exited with exit code ${signal || code}`);
       }
     } catch (err) {
-      console.error("Process stop error: ", err);
+      console.error(`${proc.name}: Process stop error`);
+      console.error(err);
     }
   });
 
   emitter.on("killall", (signal) => {
     try {
       child.kill(signal);
-    } catch (error) {
-      if (error.code === "EPERM") {
-        console.error(
-          `${proc.name}: Process has become unkillable. return EPERM`,
-        );
-      }
+    } catch (err) {
+      console.error(`${proc.name}: Process has become unkillable`);
+      console.error(err);
     }
   });
 };
