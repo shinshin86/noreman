@@ -19,6 +19,29 @@ const run = (cmd: string, port: number) => {
   });
 };
 
+const getProcNames = (procs: Array<ProcInfo>): string | undefined => {
+  const procList = procs.map(({ name, status }) => {
+    return { name, status };
+  });
+
+  if (procList.length === 0) {
+    return;
+  }
+
+  return procList.map(({ name, status }) => {
+    return status === "running" ? `*${name}` : name;
+  }).join("\n");
+};
+
+const getProc = (
+  name: string,
+  procs: Array<ProcInfo>,
+): ProcInfo | undefined => {
+  const procName = name;
+  const procInfo = procs.find((proc) => proc.name === procName);
+  return procInfo || undefined;
+};
+
 const startServer = (port: number, emitter: EventEmitter): net.Server => {
   const procs: Array<ProcInfo> = [];
 
@@ -32,43 +55,35 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
 
       switch (cmdList[0]) {
         case "noreman.list":
-          const procList = procs.map(({ name, status }) => {
-            return { name, status };
-          });
+          const procName = getProcNames(procs);
 
-          if (procList.length) {
-            const procNameList = procList.map(({ name, status }) => {
-              return status === "running" ? `*${name}` : name;
-            }).join("\n");
-
-            c.write(procNameList);
+          if (procName) {
+            c.write(procName);
           } else {
             c.write("Not running proc");
           }
 
           break;
         case "noreman.stop":
-          const stopProcName = cmdList[1];
-          const stopProcInfo = procs.find((proc) => proc.name === stopProcName);
+          const stopProcInfo = getProc(cmdList[1], procs);
 
           if (stopProcInfo) {
             stopProc(stopProcInfo);
-            c.write(`Stop successfully: ${stopProcName}`);
+            c.write(`Stop successfully: ${stopProcInfo.name}`);
           }
 
           break;
         case "noreman.start":
-          const startProcName = cmdList[1];
-          const startProcInfo = procs.find((proc) =>
-            proc.name === startProcName
-          );
+          const startProcInfo = getProc(cmdList[1], procs);
 
           if (startProcInfo) {
             if (startProcInfo.status === "stop") {
               startProc(startProcInfo, emitter);
-              c.write(`Start successfully: ${startProcName}`);
+              c.write(`Start successfully: ${startProcInfo.name}`);
             } else {
-              c.write(`Error, It is not in a state to start: ${startProcName}`);
+              c.write(
+                `Error, It is not in a state to start: ${startProcInfo.name}`,
+              );
             }
           } else {
             c.write("Error: Not found proc");
@@ -76,18 +91,15 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
 
           break;
         case "noreman.restart":
-          const restartProcName = cmdList[1];
-          const restartProcInfo = procs.find((proc) =>
-            proc.name === restartProcName
-          );
+          const restartProcInfo = getProc(cmdList[1], procs);
 
           if (restartProcInfo) {
             restartProcInfo?.childProcess?.kill();
-            c.write(`Stop successfully: ${restartProcName}`);
+            c.write(`Stop successfully: ${restartProcInfo.name}`);
 
             // TODO:
             setTimeout(startProc, 1000, restartProcInfo, emitter);
-            c.write(`Start successfully: ${restartProcName}`);
+            c.write(`Start successfully: ${restartProcInfo.name}`);
           } else {
             c.write("Error: Not found proc");
           }
