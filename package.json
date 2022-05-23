@@ -5,7 +5,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "node -r @swc-node/register src/main.ts",
+    "dev": "node -r @swc-node/register src/noreman.ts",
     "prepublishOnly": "npm run build",
     "fmt": "deno fmt"
   },
