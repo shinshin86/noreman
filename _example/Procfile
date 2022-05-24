@@ -1,4 +1,4 @@
-test1: node test.js
-test2: node -v
-test3: echo $PORT
-test4: deno run --allow-net echo_server.ts
+cli1: node test.js
+cli2: node -v
+cli3: echo $PORT
+web1: deno run --allow-net echo_server.ts
