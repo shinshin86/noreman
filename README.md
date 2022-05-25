@@ -1,4 +1,7 @@
 # (WIP) noreman
+
+[![Test](https://github.com/shinshin86/noreman/actions/workflows/test.yml/badge.svg)](https://github.com/shinshin86/noreman/actions/workflows/test.yml)
+
 Clone of [goreman](https://github.com/mattn/goreman) written in Node.js.
 
 status of WIP.
