@@ -17,8 +17,10 @@
     "files": {
       "include": [
         "src",
+        "__tests__",
         "deno.jsonc",
-        "package.json"
+        "package.json",
+        "jest.config.js"
       ],
       "exclude": ["node_modules"]
     }
