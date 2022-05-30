@@ -22,7 +22,7 @@ type ProcInfo = {
   cmd?: string;
   childProcess?: ChildProcessWithoutNullStreams;
   status: "running" | "stop";
-  exitCode?: number | null;
+  exitCode?: number;
 };
 
 type Env = {
