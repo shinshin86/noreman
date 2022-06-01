@@ -4,7 +4,16 @@ import { CMD_SHELL } from "./constants";
 import { displayLog } from "./log";
 import { EventEmitter } from "stream";
 
-const spawnProc = (proc: ProcInfo, emitter: EventEmitter) => {
+const stopProc = async (proc: ProcInfo) => {
+  proc?.childProcess?.kill();
+  proc.status = "stop";
+};
+
+const startProc = async (proc: ProcInfo, emitter: EventEmitter) => {
+  if (proc.cmd) {
+    return null;
+  }
+
   const cmd = `${CMD_SHELL} "${proc.cmdline}"`;
 
   const env: Env = {};
@@ -50,21 +59,6 @@ const spawnProc = (proc: ProcInfo, emitter: EventEmitter) => {
       console.error(err);
     }
   });
-};
-
-const stopProc = async (proc: ProcInfo) => {
-  proc?.childProcess?.kill();
-  proc.status = "stop";
-};
-
-const startProc = async (proc: ProcInfo, emitter: EventEmitter) => {
-  if (proc.cmd) {
-    return null;
-  }
-
-  spawnProc(proc, emitter);
-
-  return null;
 };
 
 const stopProcs = (procs: Array<ProcInfo>) => {
