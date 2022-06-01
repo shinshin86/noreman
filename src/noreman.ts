@@ -1,85 +1,11 @@
-import fs from "fs/promises";
-import { existsSync } from "fs";
 import path from "path";
 import { EventEmitter } from "events";
 import { run, startServer } from "./rpc";
 import { startProcs, stopProcs } from "./proc";
-import { Config, ProcInfo } from "./types";
-import { COLORS, DEFAULT_RPC_PORT } from "./constants";
-
-const readConfig = async (): Promise<Config> => {
-  // TODO: specify config path
-  const configJson = ".noreman.json";
-  const configJsonPath = path.join(process.cwd(), configJson);
-
-  let config: Config = {
-    procfile: "Procfile",
-    port: 5000,
-    baseDir: ".",
-    basePort: 5000,
-  };
-
-  if (existsSync(configJsonPath)) {
-    const jsonText = await fs.readFile(configJsonPath, "utf8");
-    const parsedConfig = JSON.parse(jsonText);
-
-    if (parsedConfig.procfile) {
-      config.procfile = parsedConfig.procfile;
-    }
-    if (parsedConfig.prot) {
-      config.port = parsedConfig.port;
-    }
-    if (parsedConfig.baseDir) {
-      config.baseDir = parsedConfig.baseDir;
-    }
-    if (parsedConfig.procfile) {
-      config.basePort = parsedConfig.basePort;
-    }
-  }
-
-  return config;
-};
-
-const readProcfile = async (config: Config): Promise<Array<ProcInfo>> => {
-  const procfilePath = path.join(process.cwd(), config.procfile);
-  const content = await fs.readFile(procfilePath, "utf8");
-
-  const procs: Array<ProcInfo> = [];
-
-  let index = 0;
-
-  for (const line of content.split("\n")) {
-    const tokens = line.split(":");
-
-    if (tokens.length !== 2 || tokens[0].startsWith("#")) {
-      continue;
-    }
-
-    const key = tokens[0].trim();
-    const value = tokens[1].trim();
-
-    const proc: ProcInfo = {
-      name: key,
-      cmdline: value,
-      colorIndex: index,
-      setPort: true,
-      port: config.basePort + (index * 100),
-      status: "stop",
-    };
-
-    procs.push(proc);
-
-    // TODO: maxProcNameLength
-
-    index = (index + 1) % COLORS.length;
-  }
-
-  if (procs.length === 0) {
-    throw new Error("no valid entry");
-  }
-
-  return procs;
-};
+import { ProcInfo } from "./types";
+import { DEFAULT_RPC_PORT } from "./constants";
+import { readConfig } from "./config";
+import { readProcfile } from "./procfile";
 
 const start = async (emitter: EventEmitter): Promise<void> => {
   const config = await readConfig();
