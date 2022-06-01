@@ -19,7 +19,7 @@ const run = (cmd: string, port: number) => {
   });
 };
 
-const getProcNames = (procs: Array<ProcInfo>): string | undefined => {
+const getProcsWithStatus = (procs: Array<ProcInfo>): string | undefined => {
   const procList = procs.map(({ name, status }) => {
     return { name, status };
   });
@@ -29,7 +29,7 @@ const getProcNames = (procs: Array<ProcInfo>): string | undefined => {
   }
 
   return procList.map(({ name, status }) => {
-    return status === "running" ? `*${name}` : name;
+    return `${name}: ${status}`;
   }).join("\n");
 };
 
@@ -55,7 +55,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
 
       switch (cmdList[0]) {
         case "noreman.list":
-          const procName = getProcNames(procs);
+          const procName = getProcsWithStatus(procs);
 
           if (procName) {
             c.write(procName);
