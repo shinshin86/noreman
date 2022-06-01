@@ -1,3 +1,4 @@
+import { displayProcsWithStatus } from "./log";
 import net from "node:net";
 import { EventEmitter } from "node:stream";
 import { startProc, stopProc } from "./proc";
@@ -10,7 +11,12 @@ const run = (cmd: string, port: number) => {
   });
 
   client.on("data", (data) => {
-    console.log(data.toString());
+    if (cmd === "noreman.list") {
+      displayProcsWithStatus(data.toString());
+    } else {
+      console.log(data.toString());
+    }
+
     client.end();
   });
 

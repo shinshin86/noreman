@@ -5,3 +5,17 @@ export const displayLog = (proc: ProcInfo, message: string) => {
   const color = COLORS[proc.colorIndex];
   console.log(`${color}${proc.name}:${COLOR_RESET} ${message}`);
 };
+
+export const displayProcsWithStatus = (data: string) => {
+  const procStatusList = data.split("\n");
+
+  for (const procStatus of procStatusList) {
+    const status = procStatus.split(":")[1].trim();
+
+    if (status === "running") {
+      console.log(`${COLORS[0]}${procStatus}${COLOR_RESET}`);
+    } else {
+      console.log(`${COLORS[5]}${procStatus}${COLOR_RESET}`);
+    }
+  }
+};
