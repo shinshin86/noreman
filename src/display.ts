@@ -19,3 +19,7 @@ export const displayProcsWithStatus = (data: string) => {
     }
   }
 };
+
+export const displaySuccessfulMessage = (message: string) => {
+  console.log(`${COLORS[0]}${message}${COLOR_RESET}`);
+};
