@@ -1,6 +1,7 @@
 import { Env, ProcInfo } from "./types";
 import { spawn } from "child_process";
 import { CMD_SHELL } from "./constants";
+import { displayLog } from "./log";
 import { EventEmitter } from "stream";
 
 const spawnProc = (proc: ProcInfo, emitter: EventEmitter) => {
@@ -17,11 +18,11 @@ const spawnProc = (proc: ProcInfo, emitter: EventEmitter) => {
   proc.status = "running";
 
   child.stdout?.on("data", (data) => {
-    console.log(`${proc.name}: ${data}`);
+    displayLog(proc, data);
   });
 
   child.stderr?.on("data", (data) => {
-    console.log(`${proc.name}: ${data}`);
+    displayLog(proc, data);
   });
 
   child.on("close", (code, signal) => {
@@ -30,13 +31,13 @@ const spawnProc = (proc: ProcInfo, emitter: EventEmitter) => {
 
       if (code === 0) {
         proc.exitCode = code;
-        console.log(`${proc.name}: Exited successfully`);
+        displayLog(proc, "Exited successfully");
       } else {
-        proc.exitCode = code;
-        console.log(`${proc.name}: Exited with exit code ${signal || code}`);
+        if (code) proc.exitCode = code;
+        displayLog(proc, `Exited with exit code ${signal || code}`);
       }
     } catch (err) {
-      console.error(`${proc.name}: Process stop error`);
+      displayLog(proc, "Process stop error");
       console.error(err);
     }
   });
@@ -69,7 +70,7 @@ const startProc = async (proc: ProcInfo, emitter: EventEmitter) => {
 const stopProcs = (procs: Array<ProcInfo>) => {
   for (const proc of procs) {
     if (proc.childProcess) {
-      console.log("STOP PROC:", proc.name);
+      displayLog(proc, "Stop proc");
       stopProc(proc);
     }
   }

@@ -4,19 +4,20 @@ const APP_INFO = {
   version: "0.0.1",
 };
 
-// TODO:
 const COLORS = [
-  32, // green
-  36, // cyan
-  35, // magenta
-  33, // yellow
-  34, // blue
-  31, // red
+  "\u001b[32m", // green
+  "\u001b[36m", // cyan
+  "\u001b[35m", // magenta
+  "\u001b[33m", // yellow
+  "\u001b[34m", // blue
+  "\u001b[31m", // red
 ];
+
+const COLOR_RESET = "\u001b[0m";
 
 const DEFAULT_RPC_PORT = 8555;
 
 // TODO: windows
 const CMD_SHELL = "/bin/sh -c";
 
-export { APP_INFO, CMD_SHELL, COLORS, DEFAULT_RPC_PORT };
+export { APP_INFO, CMD_SHELL, COLOR_RESET, COLORS, DEFAULT_RPC_PORT };
