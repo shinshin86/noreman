@@ -1,4 +1,4 @@
-import { displayProcsWithStatus } from "./log";
+import { displayProcsWithStatus } from "./display";
 import net from "node:net";
 import { EventEmitter } from "node:stream";
 import { startProc, stopProc } from "./proc";

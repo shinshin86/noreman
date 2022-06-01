@@ -1,7 +1,7 @@
 import { Env, ProcInfo } from "./types";
 import { spawn } from "child_process";
 import { CMD_SHELL } from "./constants";
-import { displayLog } from "./log";
+import { displayLog } from "./display";
 import { EventEmitter } from "stream";
 
 const stopProc = async (proc: ProcInfo) => {
