@@ -46,10 +46,10 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
   const procs: Array<ProcInfo> = [];
 
   const server = net.createServer((c) => {
-    console.log("Noreman RPC Server: connected");
+    // console.log("Noreman RPC Server: connected");
 
     c.on("data", (data) => {
-      console.log("rpc server log: ", data.toString());
+      // console.log("rpc server log: ", data.toString());
 
       const cmdList = data.toString().split(":");
 
@@ -109,7 +109,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
     });
 
     c.on("end", () => {
-      console.log("Noreman RPC Client: disconnected");
+      // console.log("Noreman RPC Client: disconnected");
     });
   });
 
@@ -136,7 +136,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
       server.close((e) => {
         if (e) console.error(e);
 
-        console.log(`Noreman RPC Server close: ${signal}`);
+        // console.log(`Noreman RPC Server close: ${signal}`);
       });
     }
   });
