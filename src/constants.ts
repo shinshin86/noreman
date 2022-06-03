@@ -1,4 +1,3 @@
-// TODO:
 const APP_INFO = {
   name: "noreman",
   version: "0.0.1",

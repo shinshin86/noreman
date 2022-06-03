@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 import { run, startServer } from "./rpc";
 import { startProcs, stopProcs } from "./proc";
 import { ProcInfo } from "./types";
-import { DEFAULT_RPC_PORT } from "./constants";
+import { APP_INFO, DEFAULT_RPC_PORT } from "./constants";
 import { readConfig } from "./config";
 import { readProcfile } from "./procfile";
 
@@ -24,6 +24,10 @@ const start = async (emitter: EventEmitter): Promise<void> => {
   }
 };
 
+const displayVersion = () => {
+  console.log(APP_INFO.version);
+};
+
 (async () => {
   const emitter = new EventEmitter();
 
@@ -36,6 +40,11 @@ const start = async (emitter: EventEmitter): Promise<void> => {
   const runCommand = process.argv.slice(2)[1];
 
   switch (command) {
+    case "-v":
+    case "--version":
+    case "version":
+      displayVersion();
+      break;
     case "start":
       await start(emitter);
       break;
