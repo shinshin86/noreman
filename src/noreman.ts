@@ -28,6 +28,11 @@ const displayVersion = () => {
   console.log(APP_INFO.version);
 };
 
+const displayHelp = () => {
+  console.log(`See the README for this project.
+URL: https://github.com/shinshin86/noreman`);
+};
+
 (async () => {
   const emitter = new EventEmitter();
 
@@ -44,6 +49,11 @@ const displayVersion = () => {
     case "--version":
     case "version":
       displayVersion();
+      break;
+    case "-h":
+    case "--help":
+    case "help":
+      displayHelp();
       break;
     case "start":
       await start(emitter);
