@@ -1,4 +1,6 @@
 {
+  "name": "noreman",
+  "version": "0.0.1",
   "main": "dist/noreman.js",
   "bin": {
     "sfg": "dist/noreman.js"
