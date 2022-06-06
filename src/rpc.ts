@@ -61,7 +61,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
       const cmdList = data.toString().split(":");
 
       switch (cmdList[0]) {
-        case "noreman.list":
+        case NOREMAN_COMMAND.LIST:
           const procName = getProcsWithStatus(procs);
 
           if (procName) {
@@ -71,7 +71,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
           }
 
           break;
-        case "noreman.stop":
+        case NOREMAN_COMMAND.STOP:
           const stopProcInfo = getProc(cmdList[1], procs);
 
           if (stopProcInfo) {
@@ -80,7 +80,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
           }
 
           break;
-        case "noreman.start":
+        case NOREMAN_COMMAND.START:
           const startProcInfo = getProc(cmdList[1], procs);
 
           if (startProcInfo) {
@@ -97,7 +97,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
           }
 
           break;
-        case "noreman.restart":
+        case NOREMAN_COMMAND.RESTART:
           const restartProcInfo = getProc(cmdList[1], procs);
 
           if (restartProcInfo) {
