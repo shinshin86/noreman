@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 import { run, startServer } from "./rpc";
 import { startProcs, stopProcs } from "./proc";
 import { ProcInfo } from "./types";
-import { APP_INFO, DEFAULT_RPC_PORT } from "./constants";
+import { APP_INFO, DEFAULT_RPC_PORT, NOREMAN_COMMAND } from "./constants";
 import { readConfig } from "./config";
 import { readProcfile } from "./procfile";
 
@@ -61,19 +61,22 @@ URL: https://github.com/shinshin86/noreman`);
     case "run":
       switch (runCommand) {
         case "list":
-          run("noreman.list", DEFAULT_RPC_PORT);
+          run(NOREMAN_COMMAND.LIST, DEFAULT_RPC_PORT);
           break;
         case "stop":
           const stopProcName = process.argv.slice(2)[2];
-          run(`noreman.stop:${stopProcName}`, DEFAULT_RPC_PORT);
+          run(`${NOREMAN_COMMAND.STOP}:${stopProcName}`, DEFAULT_RPC_PORT);
           break;
         case "start":
           const startProcName = process.argv.slice(2)[2];
-          run(`noreman.start:${startProcName}`, DEFAULT_RPC_PORT);
+          run(`${NOREMAN_COMMAND.START}:${startProcName}`, DEFAULT_RPC_PORT);
           break;
         case "restart":
           const restartProcName = process.argv.slice(2)[2];
-          run(`noreman.restart:${restartProcName}`, DEFAULT_RPC_PORT);
+          run(
+            `${NOREMAN_COMMAND.RESTART}:${restartProcName}`,
+            DEFAULT_RPC_PORT,
+          );
           break;
         default:
           throw new Error("Invalid run commmand");

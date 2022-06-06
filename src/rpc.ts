@@ -3,6 +3,7 @@ import net from "node:net";
 import { EventEmitter } from "node:stream";
 import { startProc, stopProc } from "./proc";
 import { ProcInfo } from "./types";
+import { NOREMAN_COMMAND } from "./constants";
 
 const run = (cmd: string, port: number) => {
   const client = net.createConnection({ port }, () => {
@@ -11,7 +12,7 @@ const run = (cmd: string, port: number) => {
   });
 
   client.on("data", (data) => {
-    if (cmd === "noreman.list") {
+    if (cmd === NOREMAN_COMMAND.LIST) {
       displayProcsWithStatus(data.toString());
     } else {
       displaySuccessfulMessage(data.toString());

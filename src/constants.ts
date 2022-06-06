@@ -19,4 +19,18 @@ const DEFAULT_RPC_PORT = 8555;
 // TODO: windows
 const CMD_SHELL = "/bin/sh -c";
 
-export { APP_INFO, CMD_SHELL, COLOR_RESET, COLORS, DEFAULT_RPC_PORT };
+const NOREMAN_COMMAND = {
+  LIST: "noreman.list",
+  STOP: "noreman.stop",
+  START: "noreman.start",
+  RESTART: "noreman.restart",
+};
+
+export {
+  APP_INFO,
+  CMD_SHELL,
+  COLOR_RESET,
+  COLORS,
+  DEFAULT_RPC_PORT,
+  NOREMAN_COMMAND,
+};
