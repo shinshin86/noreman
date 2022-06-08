@@ -4,6 +4,7 @@ import { EventEmitter } from "node:stream";
 import { startProc, stopProc } from "./proc";
 import { ProcInfo } from "./types";
 import { NOREMAN_COMMAND } from "./constants";
+import { parseNoremanCommand } from "./parse";
 
 const run = (cmd: string, port: number) => {
   const client = net.createConnection({ port }, () => {
@@ -12,7 +13,7 @@ const run = (cmd: string, port: number) => {
   });
 
   client.on("data", (data) => {
-    const parsedCmd = cmd.toString().split(":");
+    const parsedCmd = parseNoremanCommand(cmd);
 
     switch (parsedCmd[0]) {
       case NOREMAN_COMMAND.LIST:
@@ -67,7 +68,7 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
     c.on("data", (data) => {
       // console.log("rpc server log: ", data.toString());
 
-      const cmdList = data.toString().split(":");
+      const cmdList = parseNoremanCommand(data.toString());
 
       switch (cmdList[0]) {
         case NOREMAN_COMMAND.LIST:
