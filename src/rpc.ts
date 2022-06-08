@@ -25,7 +25,7 @@ const run = (cmd: string, port: number) => {
         displaySuccessfulMessage(data.toString());
         break;
       default:
-        throw new Error("Invalid noreman command: ", cmd);
+        throw new Error("Invalid noreman command: " + cmd);
     }
 
     client.end();
