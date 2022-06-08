@@ -12,10 +12,19 @@ const run = (cmd: string, port: number) => {
   });
 
   client.on("data", (data) => {
-    if (cmd === NOREMAN_COMMAND.LIST) {
-      displayProcsWithStatus(data.toString());
-    } else {
-      displaySuccessfulMessage(data.toString());
+    const parsedCmd = cmd.toString().split(":");
+
+    switch (parsedCmd[0]) {
+      case NOREMAN_COMMAND.LIST:
+        displayProcsWithStatus(data.toString());
+        break;
+      case NOREMAN_COMMAND.STOP:
+      case NOREMAN_COMMAND.START:
+      case NOREMAN_COMMAND.RESTART:
+        displaySuccessfulMessage(data.toString());
+        break;
+      default:
+        throw new Error("Invalid noreman command: ", cmd);
     }
 
     client.end();
