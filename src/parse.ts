@@ -1,4 +1,9 @@
-const parseNoremanCommand = (cmd: string): Array<string> =>
-  cmd.toString().split(":");
+const parseNoremanCommand = (cmd: string): Array<string> => {
+  if (!cmd.startsWith("noreman.")) {
+    throw new Error("Invalid noreman command");
+  }
+
+  return cmd.split(":");
+};
 
 export { parseNoremanCommand };
