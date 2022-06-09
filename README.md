@@ -21,8 +21,7 @@ When use `start` command then RPC server used by noreman is also started in the 
 It is possible to communicate instructions to noreman by hitting `run <command>` commands from another terminal.
 
 
-Checks the current process status.  
-Running processes are marked with `*`.
+Checks the current process status.
 
 ```sh
 yarn dev run list
