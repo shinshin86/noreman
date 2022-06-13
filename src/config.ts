@@ -1,13 +1,10 @@
 import fs from "fs/promises";
 import { existsSync } from "fs";
-import path from "path";
 import { Config } from "./types";
 
-export const readConfig = async (): Promise<Config> => {
-  // TODO: specify config path
-  const configJson = ".noreman.json";
-  const configJsonPath = path.join(process.cwd(), configJson);
-
+export const readConfig = async (
+  configPath: string | undefined,
+): Promise<Config> => {
   let config: Config = {
     procfile: "Procfile",
     port: 5000,
@@ -15,8 +12,8 @@ export const readConfig = async (): Promise<Config> => {
     basePort: 5000,
   };
 
-  if (existsSync(configJsonPath)) {
-    const jsonText = await fs.readFile(configJsonPath, "utf8");
+  if (configPath && existsSync(configPath)) {
+    const jsonText = await fs.readFile(configPath, "utf8");
     const parsedConfig = JSON.parse(jsonText);
 
     if (parsedConfig.procfile) {
