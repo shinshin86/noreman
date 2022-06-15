@@ -37,16 +37,16 @@ const run = (cmd: string, port: number) => {
 };
 
 const getProcsWithStatus = (procs: Array<ProcInfo>): string | undefined => {
-  const procList = procs.map(({ name, status }) => {
-    return { name, status };
+  const procList = procs.map(({ name, status, childProcess }) => {
+    return { name, status, pid: childProcess?.pid };
   });
 
   if (procList.length === 0) {
     return;
   }
 
-  return procList.map(({ name, status }) => {
-    return `${name}: ${status}`;
+  return procList.map(({ name, status, pid }) => {
+    return `${name}: ${status} (pid: ${pid})`;
   }).join("\n");
 };
 
