@@ -29,4 +29,15 @@ type Env = {
   PORT?: string;
 };
 
-export type { Config, Env, Noreman, ProcInfo };
+type ParsedCLI = {
+  command: string;
+  runCommand: string;
+  option: CLIOption;
+};
+
+type CLIOption = {
+  configPath?: string;
+  targetProcName?: string;
+};
+
+export type { CLIOption, Config, Env, Noreman, ParsedCLI, ProcInfo };
