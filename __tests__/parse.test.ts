@@ -1,5 +1,5 @@
 import { NOREMAN_COMMAND } from "../src/constants";
-import { parseNoremanCommand } from "../src/parse";
+import { parseCLI, parseNoremanCommand } from "../src/parse";
 
 describe("parse", () => {
   describe("parseNoremanCommand", () => {
@@ -39,6 +39,100 @@ describe("parse", () => {
     test("Invalid command", () => {
       expect(() => parseNoremanCommand("foo")).toThrowError(
         "Invalid noreman command",
+      );
+    });
+  });
+
+  describe("parseCLI", () => {
+    test("start", () => {
+      const result = parseCLI(["start"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(0);
+
+      expect(result.command).toBe("start");
+      expect(result.runCommand).toBe("");
+    });
+
+    test("start -c .noreman.json", () => {
+      const result = parseCLI(["start", "-c", ".noreman.json"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("configPath" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("start");
+      expect(result.runCommand).toBe("");
+      expect(result.option.configPath).toBe(".noreman.json");
+    });
+
+    test("start -c", () => {
+      expect(() => parseCLI(["start", "-c"])).toThrowError(
+        "Config path must be specified",
+      );
+    });
+
+    test("run list", () => {
+      const result = parseCLI(["run", "list"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(0);
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("list");
+    });
+
+    test("run stop proc1", () => {
+      const result = parseCLI(["run", "stop", "proc1"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("targetProcName" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("stop");
+      expect(result.option.targetProcName).toBe("proc1");
+    });
+
+    test("run start proc1", () => {
+      const result = parseCLI(["run", "start", "proc1"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("targetProcName" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("start");
+      expect(result.option.targetProcName).toBe("proc1");
+    });
+
+    test("run restart proc1", () => {
+      const result = parseCLI(["run", "restart", "proc1"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("targetProcName" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("restart");
+      expect(result.option.targetProcName).toBe("proc1");
+    });
+
+    test("run foo proc1", () => {
+      expect(() => parseCLI(["run", "foo", "proc1"])).toThrowError(
+        "Invalid run commmand",
+      );
+    });
+
+    test("run start", () => {
+      expect(() => parseCLI(["run", "start"])).toThrowError(
+        "Target proc name must be specified",
       );
     });
   });

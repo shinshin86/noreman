@@ -6,6 +6,7 @@ import { ProcInfo } from "./types";
 import { APP_INFO, DEFAULT_RPC_PORT, NOREMAN_COMMAND } from "./constants";
 import { readConfig } from "./config";
 import { readProcfile } from "./procfile";
+import { parseCLI } from "./parse";
 
 const start = async (
   emitter: EventEmitter,
@@ -44,64 +45,56 @@ URL: https://github.com/shinshin86/noreman`);
     emitter.emit("killall", "SIGINT");
   });
 
-  // TODO: parse command and option
-  const command = process.argv.slice(2)[0];
-  const runCommand = process.argv.slice(2)[1];
+  try {
+    const { command, runCommand, option } = parseCLI(process.argv.slice(2));
 
-  const option: any = {};
-  let configJsonPath;
-
-  if (
-    process.argv.slice(2).length >= 3 &&
-    ["-c", "--config"].includes(process.argv.slice(2)[1])
-  ) {
-    option["configPath"] = process.argv.slice(2)[2];
-  }
-
-  if (Object.keys(option).length === 1 && option["configPath"]) {
-    const configFilePath = option["configPath"];
-    configJsonPath = path.join(process.cwd(), configFilePath);
-  }
-
-  switch (command) {
-    case "-v":
-    case "--version":
-    case "version":
-      displayVersion();
-      break;
-    case "-h":
-    case "--help":
-    case "help":
-      displayHelp();
-      break;
-    case "start":
-      await start(emitter, configJsonPath);
-      break;
-    case "run":
-      switch (runCommand) {
-        case "list":
-          run(NOREMAN_COMMAND.LIST, DEFAULT_RPC_PORT);
-          break;
-        case "stop":
-          const stopProcName = process.argv.slice(2)[2];
-          run(`${NOREMAN_COMMAND.STOP}:${stopProcName}`, DEFAULT_RPC_PORT);
-          break;
-        case "start":
-          const startProcName = process.argv.slice(2)[2];
-          run(`${NOREMAN_COMMAND.START}:${startProcName}`, DEFAULT_RPC_PORT);
-          break;
-        case "restart":
-          const restartProcName = process.argv.slice(2)[2];
-          run(
-            `${NOREMAN_COMMAND.RESTART}:${restartProcName}`,
-            DEFAULT_RPC_PORT,
-          );
-          break;
-        default:
-          throw new Error("Invalid run commmand");
-      }
-      break;
-    default:
-      console.log("error");
+    switch (command) {
+      case "-v":
+      case "--version":
+      case "version":
+        displayVersion();
+        break;
+      case "-h":
+      case "--help":
+      case "help":
+        displayHelp();
+        break;
+      case "start":
+        const configFilePath: string | undefined = option["configPath"] &&
+          path.join(process.cwd(), option["configPath"]);
+        await start(emitter, configFilePath);
+        break;
+      case "run":
+        switch (runCommand) {
+          case "list":
+            run(NOREMAN_COMMAND.LIST, DEFAULT_RPC_PORT);
+            break;
+          case "stop":
+            run(
+              `${NOREMAN_COMMAND.STOP}:${option["targetProcName"]}`,
+              DEFAULT_RPC_PORT,
+            );
+            break;
+          case "start":
+            run(
+              `${NOREMAN_COMMAND.START}:${option["targetProcName"]}`,
+              DEFAULT_RPC_PORT,
+            );
+            break;
+          case "restart":
+            run(
+              `${NOREMAN_COMMAND.RESTART}:${option["targetProcName"]}`,
+              DEFAULT_RPC_PORT,
+            );
+            break;
+          default:
+            throw new Error("Invalid run commmand");
+        }
+        break;
+      default:
+        console.log("error");
+    }
+  } catch (error) {
+    console.error(error);
   }
 })();
