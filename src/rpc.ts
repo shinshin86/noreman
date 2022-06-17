@@ -3,7 +3,7 @@ import net from "node:net";
 import { EventEmitter } from "node:stream";
 import { startProc, stopProc } from "./proc";
 import { ProcInfo } from "./types";
-import { NOREMAN_COMMAND } from "./constants";
+import { NOREMAN_COMMAND, NOREMAN_LIST_OPTIONS } from "./constants";
 import { parseNoremanCommand } from "./parse";
 
 const run = (cmd: string, port: number) => {
@@ -36,17 +36,20 @@ const run = (cmd: string, port: number) => {
   });
 };
 
-const getProcsWithStatus = (procs: Array<ProcInfo>): string | undefined => {
-  const procList = procs.map(({ name, status }) => {
-    return { name, status };
+const getProcsWithStatus = (
+  procs: Array<ProcInfo>,
+  displayPid: boolean,
+): string | undefined => {
+  const procList = procs.map(({ name, status, childProcess }) => {
+    return { name, status, pid: childProcess?.pid };
   });
 
   if (procList.length === 0) {
     return;
   }
 
-  return procList.map(({ name, status }) => {
-    return `${name}: ${status}`;
+  return procList.map(({ name, status, pid }) => {
+    return `${name}: ${status}${displayPid ? ` (pid: ${pid})` : ""}`;
   }).join("\n");
 };
 
@@ -72,7 +75,8 @@ const startServer = (port: number, emitter: EventEmitter): net.Server => {
 
       switch (cmdList[0]) {
         case NOREMAN_COMMAND.LIST:
-          const procName = getProcsWithStatus(procs);
+          const displayPid = cmdList[1] === NOREMAN_LIST_OPTIONS.PID;
+          const procName = getProcsWithStatus(procs, displayPid);
 
           if (procName) {
             c.write(procName);

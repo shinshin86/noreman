@@ -25,6 +25,9 @@ Checks the current process status.
 
 ```sh
 yarn dev run list
+
+# display pid option
+yarn dev run list -p # or --pid
 ```
 
 Restart a specific process.

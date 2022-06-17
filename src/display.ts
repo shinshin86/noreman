@@ -12,7 +12,7 @@ export const displayProcsWithStatus = (data: string) => {
   for (const procStatus of procStatusList) {
     const status = procStatus.split(":")[1].trim();
 
-    if (status === "running") {
+    if (status.startsWith("running")) {
       console.log(`${COLORS[0]}${procStatus}${COLOR_RESET}`);
     } else {
       console.log(`${COLORS[5]}${procStatus}${COLOR_RESET}`);

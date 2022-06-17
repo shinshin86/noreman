@@ -26,6 +26,10 @@ const NOREMAN_COMMAND = {
   RESTART: "noreman.restart",
 };
 
+const NOREMAN_LIST_OPTIONS = {
+  PID: "LIST_OPTION_DISPLAY_PID",
+};
+
 export {
   APP_INFO,
   CMD_SHELL,
@@ -33,4 +37,5 @@ export {
   COLORS,
   DEFAULT_RPC_PORT,
   NOREMAN_COMMAND,
+  NOREMAN_LIST_OPTIONS,
 };

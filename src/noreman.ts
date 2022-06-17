@@ -3,7 +3,12 @@ import { EventEmitter } from "events";
 import { run, startServer } from "./rpc";
 import { startProcs, stopProcs } from "./proc";
 import { ProcInfo } from "./types";
-import { APP_INFO, DEFAULT_RPC_PORT, NOREMAN_COMMAND } from "./constants";
+import {
+  APP_INFO,
+  DEFAULT_RPC_PORT,
+  NOREMAN_COMMAND,
+  NOREMAN_LIST_OPTIONS,
+} from "./constants";
 import { readConfig } from "./config";
 import { readProcfile } from "./procfile";
 import { parseCLI } from "./parse";
@@ -67,7 +72,12 @@ URL: https://github.com/shinshin86/noreman`);
       case "run":
         switch (runCommand) {
           case "list":
-            run(NOREMAN_COMMAND.LIST, DEFAULT_RPC_PORT);
+            run(
+              `${NOREMAN_COMMAND.LIST}${
+                option["displayPid"] ? `:${NOREMAN_LIST_OPTIONS.PID}` : ""
+              }`,
+              DEFAULT_RPC_PORT,
+            );
             break;
           case "stop":
             run(
