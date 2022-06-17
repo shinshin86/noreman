@@ -24,7 +24,7 @@ const parseCLI = (argvList: Array<string>): ParsedCLI => {
   }
 
   if (command === "run" && runCommand === "list") {
-    // TODO: option
+    option["displayPid"] = ["-p", "--pid"].includes(argvList[2]);
   } else if (command === "run") {
     if (!argvList[2]) {
       throw new Error("Target proc name must be specified");

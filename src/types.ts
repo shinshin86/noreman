@@ -38,6 +38,7 @@ type ParsedCLI = {
 type CLIOption = {
   configPath?: string;
   targetProcName?: string;
+  displayPid?: boolean;
 };
 
 export type { CLIOption, Config, Env, Noreman, ParsedCLI, ProcInfo };

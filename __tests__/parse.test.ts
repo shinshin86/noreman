@@ -79,10 +79,77 @@ describe("parse", () => {
       expect("command" in result).toBeTruthy();
       expect("runCommand" in result).toBeTruthy();
       expect("option" in result).toBeTruthy();
-      expect(Object.keys(result.option).length).toBe(0);
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("displayPid" in result.option).toBeTruthy();
 
       expect(result.command).toBe("run");
       expect(result.runCommand).toBe("list");
+      expect(result.option.displayPid).toBeFalsy();
+    });
+
+    test("run list -p", () => {
+      const result = parseCLI(["run", "list", "-p"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("displayPid" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("list");
+      expect(result.option.displayPid).toBeTruthy();
+    });
+
+    test("run list --pid", () => {
+      const result = parseCLI(["run", "list", "--pid"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("displayPid" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("list");
+      expect(result.option.displayPid).toBeTruthy();
+    });
+
+    test("run list --pid foo(Unnecessary trailing options are ignored)", () => {
+      const result = parseCLI(["run", "list", "--pid", "foo"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("displayPid" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("list");
+      expect(result.option.displayPid).toBeTruthy();
+    });
+
+    test("run list -pid(Invalid option)", () => {
+      const result = parseCLI(["run", "list", "-pid"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("displayPid" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("list");
+      expect(result.option.displayPid).toBeFalsy();
+    });
+
+    test("run list foo(Invalid option)", () => {
+      const result = parseCLI(["run", "list", "foo"]);
+      expect("command" in result).toBeTruthy();
+      expect("runCommand" in result).toBeTruthy();
+      expect("option" in result).toBeTruthy();
+      expect(Object.keys(result.option).length).toBe(1);
+      expect("displayPid" in result.option).toBeTruthy();
+
+      expect(result.command).toBe("run");
+      expect(result.runCommand).toBe("list");
+      expect(result.option.displayPid).toBeFalsy();
     });
 
     test("run stop proc1", () => {
