@@ -1,11 +1,10 @@
-# (WIP) noreman
+# noreman
 
 [![Test](https://github.com/shinshin86/noreman/actions/workflows/test.yml/badge.svg)](https://github.com/shinshin86/noreman/actions/workflows/test.yml)
 
-Clone of [goreman](https://github.com/mattn/goreman) written in Node.js.
+Clone of [foreman](https://github.com/ddollar/foreman) and [goreman](https://github.com/mattn/goreman) written in Node.js.
 
 status of WIP.
-
 
 ## Development
 
@@ -77,6 +76,11 @@ Start a specific process.
 yarn dev run start foo
 ```
 
+## Build
+
+```sh
+yarn build
+```
 
 ## TODO
 

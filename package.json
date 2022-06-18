@@ -1,9 +1,10 @@
 {
   "name": "noreman",
   "version": "0.0.1",
+  "description": "Manage Procfile-based applications (foreman and goreman clone written in Node.js)",
   "main": "dist/noreman.js",
   "bin": {
-    "sfg": "dist/noreman.js"
+    "noreman": "dist/noreman.js"
   },
   "scripts": {
     "build": "tsc",
@@ -12,6 +13,16 @@
     "fmt": "deno fmt",
     "test": "jest"
   },
+  "keywords": [
+    "devops",
+    "dev ops",
+    "procfile",
+    "process manager",
+    "goreman",
+    "foreman"
+  ],
+  "author": "shinshin86 <shinshin86npm@gmail.com> (https://github.com/shinshin86)",
+  "license": "MIT",
   "devDependencies": {
     "@swc-node/jest": "^1.5.2",
     "@swc-node/register": "^1.5.1",
