@@ -2,7 +2,7 @@ import path from "path";
 import { EventEmitter } from "events";
 import { run, startServer } from "./rpc";
 import { startProcs, stopProcs } from "./proc";
-import { ProcInfo } from "./types";
+import { Config, ProcInfo } from "./types";
 import {
   APP_INFO,
   DEFAULT_RPC_PORT,
@@ -17,8 +17,17 @@ const start = async (
   emitter: EventEmitter,
   configPath: string | undefined,
 ): Promise<void> => {
-  const config = await readConfig(configPath);
-  process.chdir(path.join(process.cwd(), config.baseDir));
+  let config: Config;
+
+  try {
+    config = await readConfig(
+      configPath || path.join(process.cwd(), "Procfile"),
+    );
+    process.chdir(path.join(process.cwd(), config.baseDir));
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 
   const procs: Array<ProcInfo> = await readProcfile(config);
 

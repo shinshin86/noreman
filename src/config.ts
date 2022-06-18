@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import { Config } from "./types";
 
 export const readConfig = async (
-  configPath: string | undefined,
+  configPath: string,
 ): Promise<Config> => {
   let config: Config = {
     procfile: "Procfile",
@@ -12,22 +12,26 @@ export const readConfig = async (
     basePort: 5000,
   };
 
-  if (configPath && existsSync(configPath)) {
-    const jsonText = await fs.readFile(configPath, "utf8");
-    const parsedConfig = JSON.parse(jsonText);
+  if (!configPath || !existsSync(configPath)) {
+    throw new Error(
+      "Procfile does not exist in the specified path.: " + configPath,
+    );
+  }
 
-    if (parsedConfig.procfile) {
-      config.procfile = parsedConfig.procfile;
-    }
-    if (parsedConfig.prot) {
-      config.port = parsedConfig.port;
-    }
-    if (parsedConfig.baseDir) {
-      config.baseDir = parsedConfig.baseDir;
-    }
-    if (parsedConfig.procfile) {
-      config.basePort = parsedConfig.basePort;
-    }
+  const jsonText = await fs.readFile(configPath, "utf8");
+  const parsedConfig = JSON.parse(jsonText);
+
+  if (parsedConfig.procfile) {
+    config.procfile = parsedConfig.procfile;
+  }
+  if (parsedConfig.prot) {
+    config.port = parsedConfig.port;
+  }
+  if (parsedConfig.baseDir) {
+    config.baseDir = parsedConfig.baseDir;
+  }
+  if (parsedConfig.procfile) {
+    config.basePort = parsedConfig.basePort;
   }
 
   return config;
