@@ -11,15 +11,38 @@ status of WIP.
 
 We use [@swc-node/register](https://www.npmjs.com/package/@swc-node/register) to run everything in development with `.ts`.
 
+### start
+
 Executes all commands defined in Procfile and displays output.
 
 ```sh
+# Procfile must exist in the current directory.
 yarn dev start
+```
+
+Or, by reading the file `.noreman.json`, you can change the startup path, etc.
+
+example: `.noreman.json`
+
+```json
+{
+    "procfile": "Procfile",
+    "port": 5000,
+    "baseDir": "_example",
+    "basePort": 5000
+}
+```
+
+When executing, pass the path to `.noreman.json` with the `-c` option.
+
+```sh
+yarn dev start -c .noreman.json
 ```
 
 When use `start` command then RPC server used by noreman is also started in the background.
 It is possible to communicate instructions to noreman by hitting `run <command>` commands from another terminal.
 
+### run list
 
 Checks the current process status.
 
@@ -30,17 +53,23 @@ yarn dev run list
 yarn dev run list -p # or --pid
 ```
 
+### run restart
+
 Restart a specific process.
 
 ```sh
 yarn dev run restart foo
 ```
 
+### run stop
+
 Stop a specific process.
 
 ```sh
 yarn dev run stop foo
 ```
+
+### run start
 
 Start a specific process.
 
