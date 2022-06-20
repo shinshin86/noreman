@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { Config, ProcInfo } from "./types";
-import { COLORS } from "./constants";
+import { COLORS, MAX_PROC_COUNT, MAX_PROC_NAME_LENGTH } from "./constants";
 
 export const readProcfile = async (
   config: Config,
@@ -12,6 +12,12 @@ export const readProcfile = async (
   const procs: Array<ProcInfo> = [];
 
   let index = 0;
+
+  if (content.split("\n").length > MAX_PROC_COUNT) {
+    throw new Error(
+      "Maximum number of procs that can be set has been exceeded.",
+    );
+  }
 
   for (const line of content.split("\n")) {
     const tokens = line.split(":");
