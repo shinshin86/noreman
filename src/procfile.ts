@@ -29,6 +29,13 @@ export const readProcfile = async (
     const key = tokens[0].trim();
     const value = tokens[1].trim();
 
+    // TODO: Counting letters by `length` is not accurate
+    if (key.length > MAX_PROC_NAME_LENGTH) {
+      throw new Error(
+        "Maximum number of characters in the name that can be set has been exceeded.",
+      );
+    }
+
     const proc: ProcInfo = {
       name: key,
       cmdline: value,
