@@ -14,7 +14,8 @@ const startProc = async (proc: ProcInfo, emitter: EventEmitter) => {
     return null;
   }
 
-  const cmd = `${CMD_SHELL} "${proc.cmdline}"`;
+  const platform = process.platform;
+  const cmd = `${CMD_SHELL[platform]} "${proc.cmdline}"`;
 
   const env: Env = {};
   if (proc.setPort) {

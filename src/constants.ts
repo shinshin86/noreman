@@ -16,8 +16,11 @@ const COLOR_RESET = "\u001b[0m";
 
 const DEFAULT_RPC_PORT = 8555;
 
-// TODO: windows
-const CMD_SHELL = "/bin/sh -c";
+const CMD_SHELL = {
+  darwin: "/bin/sh -c",
+  linux: "/bin/sh -c",
+  win32: "cmd /c"
+};
 
 const NOREMAN_COMMAND = {
   LIST: "noreman.list",
