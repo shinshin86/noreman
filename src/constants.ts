@@ -19,7 +19,7 @@ const DEFAULT_RPC_PORT = 8555;
 const CMD_SHELL = {
   darwin: "/bin/sh -c",
   linux: "/bin/sh -c",
-  win32: "cmd /c"
+  win32: "cmd /c",
 };
 
 const NOREMAN_COMMAND = {
